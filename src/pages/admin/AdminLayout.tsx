@@ -25,8 +25,19 @@ import {
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 const AdminLayout: React.FC = () => {
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out of the admin panel."
+    });
+    // In a real app, this would redirect to the login page or home page
+  };
+
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-slate-50 dark:bg-slate-900">
@@ -113,7 +124,7 @@ const AdminLayout: React.FC = () => {
                   <span>Settings</span>
                 </NavLink>
               </SidebarMenuButton>
-              <Button variant="outline" className="w-full flex items-center gap-2">
+              <Button variant="outline" className="w-full flex items-center gap-2" onClick={handleLogout}>
                 <LogOut className="w-4 h-4" />
                 <span>Logout</span>
               </Button>
