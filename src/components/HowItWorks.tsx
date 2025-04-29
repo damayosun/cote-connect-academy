@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { Search, Calendar, Star, Book } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { NavLink } from 'react-router-dom';
 
 const steps = [
   {
@@ -33,12 +35,12 @@ const HowItWorks: React.FC = () => {
   return (
     <div className="py-16 bg-white dark:bg-slate-900">
       <div className="container mx-auto px-4">
-        <h2 className="section-title text-center">How It Works</h2>
+        <h2 className="section-title text-center text-3xl font-bold mb-4">How It Works</h2>
         <p className="text-center text-slate-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto">
           COTE-Tutorials makes it easy to connect with expert tutors and enhance your learning journey.
         </p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {steps.map((step) => (
             <div key={step.id} className="flex flex-col items-center text-center">
               <div className="w-16 h-16 rounded-full bg-cote-light dark:bg-slate-800 flex items-center justify-center mb-4">
@@ -55,6 +57,12 @@ const HowItWorks: React.FC = () => {
               </p>
             </div>
           ))}
+        </div>
+        
+        <div className="text-center">
+          <Button asChild className="bg-cote-primary hover:bg-cote-secondary">
+            <NavLink to="/how-it-works">Learn More</NavLink>
+          </Button>
         </div>
       </div>
     </div>
