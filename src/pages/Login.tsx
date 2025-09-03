@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -8,70 +8,27 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useAuth } from '@/contexts/AuthContext';
-import { useRoleBasedRedirect } from '@/hooks/useRoleBasedRedirect';
+import { useToast } from '@/hooks/use-toast';
 
 const Login: React.FC = () => {
-  const { signIn, signUp, user } = useAuth();
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-    subjects: ''
-  });
-  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
-  // Redirect if already logged in
-  useEffect(() => {
-    if (user) {
-      // Will be handled by AuthProvider's role-based redirect
-      navigate('/');
-    }
-  }, [user, navigate]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Login Successful",
+      description: "Welcome back to COTE-Tutorials!",
     });
+    // In a real app, you would handle authentication here
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegistration = (e: React.FormEvent, userType: string) => {
     e.preventDefault();
-    setLoading(true);
-    
-    const { error } = await signIn(formData.email, formData.password);
-    
-    if (!error) {
-      // Role-based redirect will be handled by auth context
-      navigate('/');
-    }
-    
-    setLoading(false);
-  };
-
-  const handleRegistration = async (e: React.FormEvent, userType: 'student' | 'tutor') => {
-    e.preventDefault();
-    setLoading(true);
-    
-    const profileData = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      ...(userType === 'tutor' && { 
-        subjects: formData.subjects.split(',').map(s => s.trim()) 
-      })
-    };
-
-    const { error } = await signUp(formData.email, formData.password, userType, profileData);
-    
-    if (!error) {
-      // User will need to verify email before redirect
-      navigate('/login');
-    }
-    
-    setLoading(false);
+    toast({
+      title: "Registration Successful",
+      description: `Your ${userType} account has been created.`,
+    });
+    // In a real app, you would handle registration here
   };
 
   return (
@@ -98,15 +55,7 @@ const Login: React.FC = () => {
                     <div className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input 
-                          id="email" 
-                          name="email"
-                          type="email" 
-                          placeholder="your@email.com" 
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          required 
-                        />
+                        <Input id="email" type="email" placeholder="your@email.com" required />
                       </div>
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
@@ -118,17 +67,10 @@ const Login: React.FC = () => {
                             Forgot Password?
                           </NavLink>
                         </div>
-                        <Input 
-                          id="password" 
-                          name="password"
-                          type="password" 
-                          value={formData.password}
-                          onChange={handleInputChange}
-                          required 
-                        />
+                        <Input id="password" type="password" required />
                       </div>
-                      <Button type="submit" className="w-full bg-cote-primary hover:bg-cote-secondary" disabled={loading}>
-                        {loading ? 'Signing In...' : 'Sign In'}
+                      <Button type="submit" className="w-full bg-cote-primary hover:bg-cote-secondary">
+                        Sign In
                       </Button>
                     </div>
                   </form>
@@ -165,50 +107,23 @@ const Login: React.FC = () => {
                           <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                               <Label htmlFor="firstName">First Name</Label>
-                              <Input 
-                                id="firstName" 
-                                name="firstName"
-                                value={formData.firstName}
-                                onChange={handleInputChange}
-                                required 
-                              />
+                              <Input id="firstName" required />
                             </div>
                             <div className="space-y-2">
                               <Label htmlFor="lastName">Last Name</Label>
-                              <Input 
-                                id="lastName" 
-                                name="lastName"
-                                value={formData.lastName}
-                                onChange={handleInputChange}
-                                required 
-                              />
+                              <Input id="lastName" required />
                             </div>
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="studentEmail">Email</Label>
-                            <Input 
-                              id="studentEmail" 
-                              name="email"
-                              type="email" 
-                              placeholder="your@email.com" 
-                              value={formData.email}
-                              onChange={handleInputChange}
-                              required 
-                            />
+                            <Input id="studentEmail" type="email" placeholder="your@email.com" required />
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="studentPassword">Password</Label>
-                            <Input 
-                              id="studentPassword" 
-                              name="password"
-                              type="password" 
-                              value={formData.password}
-                              onChange={handleInputChange}
-                              required 
-                            />
+                            <Input id="studentPassword" type="password" required />
                           </div>
-                          <Button type="submit" className="w-full bg-cote-primary hover:bg-cote-secondary" disabled={loading}>
-                            {loading ? 'Creating Account...' : 'Create Student Account'}
+                          <Button type="submit" className="w-full bg-cote-primary hover:bg-cote-secondary">
+                            Create Student Account
                           </Button>
                         </div>
                       </form>
@@ -220,61 +135,31 @@ const Login: React.FC = () => {
                           <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                               <Label htmlFor="tutorFirstName">First Name</Label>
-                              <Input 
-                                id="tutorFirstName" 
-                                name="firstName"
-                                value={formData.firstName}
-                                onChange={handleInputChange}
-                                required 
-                              />
+                              <Input id="tutorFirstName" required />
                             </div>
                             <div className="space-y-2">
                               <Label htmlFor="tutorLastName">Last Name</Label>
-                              <Input 
-                                id="tutorLastName" 
-                                name="lastName"
-                                value={formData.lastName}
-                                onChange={handleInputChange}
-                                required 
-                              />
+                              <Input id="tutorLastName" required />
                             </div>
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="tutorEmail">Email</Label>
-                            <Input 
-                              id="tutorEmail" 
-                              name="email"
-                              type="email" 
-                              placeholder="your@email.com" 
-                              value={formData.email}
-                              onChange={handleInputChange}
-                              required 
-                            />
+                            <Input id="tutorEmail" type="email" placeholder="your@email.com" required />
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="tutorPassword">Password</Label>
-                            <Input 
-                              id="tutorPassword" 
-                              name="password"
-                              type="password" 
-                              value={formData.password}
-                              onChange={handleInputChange}
-                              required 
-                            />
+                            <Input id="tutorPassword" type="password" required />
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="tutorSubjects">Subjects (comma separated)</Label>
                             <Input 
                               id="tutorSubjects" 
-                              name="subjects"
                               placeholder="Computer Science, Data Science, etc."
-                              value={formData.subjects}
-                              onChange={handleInputChange}
                               required 
                             />
                           </div>
-                          <Button type="submit" className="w-full bg-cote-primary hover:bg-cote-secondary" disabled={loading}>
-                            {loading ? 'Creating Account...' : 'Create Tutor Account'}
+                          <Button type="submit" className="w-full bg-cote-primary hover:bg-cote-secondary">
+                            Create Tutor Account
                           </Button>
                           <p className="text-xs text-slate-500 dark:text-slate-400">
                             By registering as a tutor, you agree to our credential verification process.

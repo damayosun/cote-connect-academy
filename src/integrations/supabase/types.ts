@@ -14,190 +14,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      notifications: {
-        Row: {
-          created_at: string
-          id: string
-          message: string
-          read_status: boolean | null
-          type: Database["public"]["Enums"]["notification_type"]
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          message: string
-          read_status?: boolean | null
-          type: Database["public"]["Enums"]["notification_type"]
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          message?: string
-          read_status?: boolean | null
-          type?: Database["public"]["Enums"]["notification_type"]
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "notifications_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      sessions: {
-        Row: {
-          created_at: string
-          date_time: string
-          id: string
-          notes: string | null
-          price: number | null
-          status: Database["public"]["Enums"]["session_status"]
-          student_id: string
-          subject: string
-          tutor_id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          date_time: string
-          id?: string
-          notes?: string | null
-          price?: number | null
-          status?: Database["public"]["Enums"]["session_status"]
-          student_id: string
-          subject: string
-          tutor_id: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          date_time?: string
-          id?: string
-          notes?: string | null
-          price?: number | null
-          status?: Database["public"]["Enums"]["session_status"]
-          student_id?: string
-          subject?: string
-          tutor_id?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "sessions_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "sessions_tutor_id_fkey"
-            columns: ["tutor_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      settings: {
-        Row: {
-          id: string
-          key: string
-          updated_at: string
-          value: string
-        }
-        Insert: {
-          id?: string
-          key: string
-          updated_at?: string
-          value: string
-        }
-        Update: {
-          id?: string
-          key?: string
-          updated_at?: string
-          value?: string
-        }
-        Relationships: []
-      }
-      tutor_applications: {
-        Row: {
-          availability: Json | null
-          bio: string | null
-          credentials: string[] | null
-          id: string
-          rates: Json | null
-          status: Database["public"]["Enums"]["application_status"]
-          subjects: string[] | null
-          submitted_at: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          availability?: Json | null
-          bio?: string | null
-          credentials?: string[] | null
-          id?: string
-          rates?: Json | null
-          status?: Database["public"]["Enums"]["application_status"]
-          subjects?: string[] | null
-          submitted_at?: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          availability?: Json | null
-          bio?: string | null
-          credentials?: string[] | null
-          id?: string
-          rates?: Json | null
-          status?: Database["public"]["Enums"]["application_status"]
-          subjects?: string[] | null
-          submitted_at?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "tutor_applications_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      users: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          profile_data: Json | null
-          role: Database["public"]["Enums"]["user_role"]
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          profile_data?: Json | null
-          role?: Database["public"]["Enums"]["user_role"]
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          profile_data?: Json | null
-          role?: Database["public"]["Enums"]["user_role"]
-          updated_at?: string
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
@@ -206,10 +23,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      application_status: "pending" | "under_review" | "approved" | "rejected"
-      notification_type: "booking" | "approval" | "cancellation" | "payment"
-      session_status: "scheduled" | "completed" | "cancelled"
-      user_role: "student" | "tutor" | "admin"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -336,11 +150,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      application_status: ["pending", "under_review", "approved", "rejected"],
-      notification_type: ["booking", "approval", "cancellation", "payment"],
-      session_status: ["scheduled", "completed", "cancelled"],
-      user_role: ["student", "tutor", "admin"],
-    },
+    Enums: {},
   },
 } as const
